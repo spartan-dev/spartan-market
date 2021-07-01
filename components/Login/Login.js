@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import styles from "../styles/Home.module.css";
-import { useAuth } from "../context/AuthContext";
+import styles from "../../styles/Home.module.css";
+import { useAuth } from "../../context/AuthContext";
 import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
@@ -12,7 +12,7 @@ import Typography from "@material-ui/core/Typography";
 //validaciones
 import { useFormik } from "formik";
 import * as Yup from "yup";
-export default function Home() {
+export default function Login() {
   const router = useRouter();
   const auth = useAuth();
   const formik = useFormik({
