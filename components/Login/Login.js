@@ -1,28 +1,73 @@
+import { useState } from "react";
 import { useRouter } from "next/router";
-import styles from "../../styles/Home.module.css";
+import styles from "./Home.module.css";
 import { useAuth } from "../../context/AuthContext";
-import { makeStyles } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputLabel from "@material-ui/core/InputLabel";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
+import { loginUser } from "../../pages/api/user";
 //validaciones
 import { useFormik } from "formik";
 import * as Yup from "yup";
 export default function Login() {
+  const [loading, setLoading] = useState(false);
+  const [openSnack, setOpenSnack] = useState({
+    open: false,
+    message: "",
+    alertType: "",
+  });
   const router = useRouter();
   const auth = useAuth();
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: Yup.object(validationSchema),
-    onSubmit: (formData) => {
-      console.log(formData);
+    onSubmit: async (formData) => {
+      setLoading(true);
+      const response = await loginUser(formData);
+
+      if (response.jwt) {
+        console.log(response, " de vuelta del back");
+        setOpenSnack({
+          open: true,
+          message: "Usuario Autenticado con exito",
+          alertType: "success",
+        });
+      } else {
+        console.log(response.errors);
+        if (response?.email === "") {
+          setOpenSnack({
+            open: true,
+            message: response.errors.password,
+            alertType: "error",
+          });
+        } else {
+          setOpenSnack({
+            open: true,
+            message: response.errors.email,
+            alertType: "error",
+          });
+        }
+      }
+      setLoading(false);
     },
   });
-  console.log(auth);
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnack({ open: false, mesage: "" });
+  };
   return (
     <section className={styles.container}>
       <div className={styles.main}>
@@ -73,16 +118,37 @@ export default function Login() {
                     </FormHelperText>
                   ) : null}
                 </FormControl>
-                <div>
-                  <Button variant="contained" color="primary" type="submit">
+                <div className={styles.wrapper}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={loading}
+                  >
                     Login
                   </Button>
+                  {loading && (
+                    <CircularProgress
+                      size={24}
+                      className={styles.buttonProgress}
+                    />
+                  )}
                 </div>
               </form>
             </article>
           </section>
         </div>
       </div>
+      <Snackbar
+        open={openSnack.open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert onClose={handleClose} severity={openSnack.alertType}>
+          {openSnack.message}
+        </Alert>
+      </Snackbar>
     </section>
   );
 }

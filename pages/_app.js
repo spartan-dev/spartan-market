@@ -18,8 +18,8 @@ export default function MyApp(props) {
       jssStyles.parentElement.removeChild(jssStyles);
     }
   }, []);
-  const user = true;
-  const token = true;
+  const user = false;
+  const token = false;
   return (
     <AuthProvider>
       <Head>
