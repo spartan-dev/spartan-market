@@ -1,18 +1,21 @@
-import React, { useEffect } from "react";
-import Typography from "@material-ui/core/Typography";
-
+import React, { useEffect, useState } from "react";
+import Layout from "../components/Layout";
+import { useAuth } from "../context/AuthContext";
 const Dashboard = () => {
-  const user = { role: "VENDOR", email: "ventas@gmail.com" };
+  const [user, setUser] = useState();
+  const { auth } = useAuth();
+  console.log(auth);
+  // const user = { role: "VENDOR", email: "ventas@gmail.com" };
 
-  switch (user.role) {
+  switch (auth.role) {
     case "ADMIN":
       return <div>admin</div>;
 
     case "VENDOR":
       return (
-        <div>
+        <Layout>
           <h1>Vendedor</h1>
-        </div>
+        </Layout>
       );
 
     case "COSTUMER":

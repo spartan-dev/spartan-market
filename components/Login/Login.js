@@ -24,7 +24,8 @@ export default function Login() {
     alertType: "",
   });
   const router = useRouter();
-  const auth = useAuth();
+  const { login, auth } = useAuth();
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: Yup.object(validationSchema),
@@ -33,15 +34,14 @@ export default function Login() {
       const response = await loginUser(formData);
 
       if (response.jwt) {
-        console.log(response, " de vuelta del back");
         setOpenSnack({
           open: true,
           message: "Usuario Autenticado con exito",
           alertType: "success",
         });
+        login(response.jwt, response.user);
       } else {
-        console.log(response.errors);
-        if (response?.email === "") {
+        if (response?.errors.email === "") {
           setOpenSnack({
             open: true,
             message: response.errors.password,
@@ -50,7 +50,7 @@ export default function Login() {
         } else {
           setOpenSnack({
             open: true,
-            message: response.errors.email,
+            message: response?.errors.email,
             alertType: "error",
           });
         }
@@ -64,6 +64,7 @@ export default function Login() {
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
+      setOpenSnack({ open: false, mesage: "" });
       return;
     }
     setOpenSnack({ open: false, mesage: "" });

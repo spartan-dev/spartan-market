@@ -77,6 +77,6 @@
     flex-direction: row;
   }
   .form {
-    align-items: center;
+    align-items: flex-end;
   }
 }

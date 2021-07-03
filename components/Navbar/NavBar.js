@@ -1,6 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 import Link from "next/link";
+import { useAuth } from "../../context/AuthContext";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -18,6 +19,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import RedeemIcon from "@material-ui/icons/Redeem";
 /* import {
   StoreIcon,
   StorefrontIcon,
@@ -93,10 +95,10 @@ const vendorOptions = [
     },
   ],
   [
-    "/",
-    "Create",
+    "/createproducts",
+    "Create Products",
     function iconSet() {
-      return <MailIcon />;
+      return <RedeemIcon />;
     },
   ],
 ];
@@ -104,10 +106,11 @@ const costumerOptions = [["/store"], ["Store"]];
 const adminOptions = [["/allproducts"], ["All Products"]];
 
 const NavBar = ({ children }) => {
+  const { auth } = useAuth();
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  console.log(auth, "in navbar");
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -160,14 +163,16 @@ const NavBar = ({ children }) => {
         </div>
         <Divider />
         <List>
-          {vendorOptions.map((text, index) => (
-            <Link href={text[0]} key={index} passHref>
-              <ListItem button>
-                <ListItemIcon>{text[2]()}</ListItemIcon>
-                <ListItemText primary={text[1]} />
-              </ListItem>
-            </Link>
-          ))}
+          {auth.role === "VENDOR"
+            ? vendorOptions.map((text, index) => (
+                <Link href={text[0]} key={index} passHref>
+                  <ListItem button>
+                    <ListItemIcon>{text[2]()}</ListItemIcon>
+                    <ListItemText primary={text[1]} />
+                  </ListItem>
+                </Link>
+              ))
+            : null}
         </List>
       </Drawer>
       <main
