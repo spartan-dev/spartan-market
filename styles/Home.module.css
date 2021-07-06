@@ -53,8 +53,15 @@
   gap: 20px;
 }
 .wrapper {
-  margin: 1;
-  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 6em;
+}
+.buttonspace {
+  margin-right: 2em;
 }
 .buttonProgress {
   position: absolute;

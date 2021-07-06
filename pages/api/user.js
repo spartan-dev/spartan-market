@@ -17,3 +17,21 @@ export async function loginUser(formData) {
     return error;
   }
 }
+
+export async function signupUser(formData) {
+  try {
+    const url = `${BASE_URL}signup`;
+    const params = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    };
+    const response = await fetch(url, params);
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    return error;
+  }
+}

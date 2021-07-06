@@ -1,3 +1,6 @@
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useAuth } from "../context/AuthContext";
 import Typography from "@material-ui/core/Typography";
 import Image from "next/image";
 import { Container, makeStyles, Button } from "@material-ui/core";
@@ -32,6 +35,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const CreateProducts = () => {
+  const router = useRouter();
+  const { auth } = useAuth();
+  useEffect(() => {
+    if (auth === undefined || auth === null) {
+      router.replace("/");
+    }
+  }, [auth, router]);
   const classes = useStyles();
   return (
     <Container

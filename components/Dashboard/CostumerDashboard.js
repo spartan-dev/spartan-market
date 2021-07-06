@@ -1,7 +1,9 @@
+import Products from "../Products";
+
 const CostumerDashBoard = () => {
   return (
     <section>
-      <h1>Costumer component</h1>
+      <Products />
     </section>
   );
 };

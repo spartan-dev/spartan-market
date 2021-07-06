@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { useRouter } from "next/router";
 import Typography from "@material-ui/core/Typography";
 import { Container, makeStyles, Button } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import { ProductCard } from "../Card";
-import { getAllProducts } from "../../pages/api/products";
+import { getToken } from "../../pages/api/token";
+import jwtDecode from "jwt-decode";
+import { getProductsByVendor, getAllProducts } from "../../pages/api/products";
+import router from "next/router";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -13,13 +18,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Products = () => {
   const [allproducts, setProducts] = useState();
+  const token = getToken();
+  const router = useRouter();
+  const userId = jwtDecode(token).id;
+  const { auth } = useAuth();
   useEffect(() => {
-    (async function () {
-      const products = await getAllProducts();
-      console.log(products.allProducts);
-      setProducts(products.allProducts);
-    })();
-  }, []);
+    if (auth === undefined || auth === null) {
+      router.replace("/");
+    }
+    if (auth?.role === "ADMIN" || auth?.role === "COSTUMER") {
+      (async function () {
+        const products = await getAllProducts();
+        console.log(products.allProducts);
+        setProducts(products.allProducts);
+      })();
+    } else {
+      (async function () {
+        const products = await getProductsByVendor(userId);
+        console.log(products.vendorProducts);
+        setProducts(products.vendorProducts);
+      })();
+    }
+  }, [auth, userId, router]);
   const classes = useStyles();
   console.log(allproducts);
   return (

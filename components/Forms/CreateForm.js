@@ -14,6 +14,8 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { createProduct } from "../../pages/api/products";
+import { getToken } from "../../pages/api/token";
+import jwtDecode from "jwt-decode";
 const useStyles = makeStyles((theme) => ({
   inputSpace: {
     margin: "10px 10px",
@@ -30,6 +32,8 @@ const CreateProductForm = () => {
     message: "",
     alertType: "",
   });
+  const token = getToken();
+  const userId = jwtDecode(token).id;
   const classes = useStyles();
   const formik = useFormik({
     initialValues: initialValues,
@@ -39,7 +43,7 @@ const CreateProductForm = () => {
       for (let item in values) {
         form.append(item, values[item]);
       }
-
+      form.append("userId", userId);
       const response = await createProduct(form);
       console.log(response);
       if (response.product) {

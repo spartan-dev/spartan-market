@@ -14,3 +14,8 @@ export function setRole(role) {
 export function getRole() {
   return localStorage.getItem(ROLE);
 }
+
+export function removeToken() {
+  localStorage.removeItem(TOKEN);
+  localStorage.removeItem(ROLE);
+}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Layout from "../components/Layout";
 import {
   VendorDashboard,
@@ -8,9 +9,14 @@ import {
 import { useAuth } from "../context/AuthContext";
 const Dashboard = ({ children }) => {
   const [user, setUser] = useState();
+  const router = useRouter();
   const { auth } = useAuth();
-
-  switch (auth.role) {
+  useEffect(() => {
+    if (auth === undefined || auth === null) {
+      router.replace("/");
+    }
+  }, [auth, router]);
+  switch (auth?.role) {
     case "ADMIN":
       return <AdminDashboard />;
 

@@ -12,7 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import { loginUser } from "../pages/api/user";
-
+import { SignUpModal } from "../components/Modal";
 //validaciones
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -126,7 +126,16 @@ export default function Login() {
                   ) : null}
                 </FormControl>
                 <div className={styles.wrapper}>
+                  <SignUpModal
+                    className={styles.buttonspace}
+                    title={"Crea una cuenta"}
+                    text={"Crea una cuenta como vendedor y sube tus productos"}
+                    cancelButton={"cerrar"}
+                    openButton={"Signup"}
+                    submitButton={"Crear Cuenta "}
+                  />
                   <Button
+                    className={styles.buttonspace}
                     variant="contained"
                     color="primary"
                     type="submit"

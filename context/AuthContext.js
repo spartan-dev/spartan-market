@@ -1,5 +1,11 @@
 import { createContext, useContext, useMemo, useState, useEffect } from "react";
-import { setToken, getToken, setRole, getRole } from "../pages/api/token";
+import {
+  setToken,
+  getToken,
+  setRole,
+  getRole,
+  removeToken,
+} from "../pages/api/token";
 import jwtDecode from "jwt-decode";
 const AuthContext = createContext({
   auth: {},
@@ -43,11 +49,14 @@ export const AuthProvider = ({ children }) => {
       role,
     });
   };
+  const logout = () => {
+    removeToken();
+  };
   const authData = useMemo(
     () => ({
       auth,
       login,
-      logout: () => null,
+      logout,
       setRealoadUser,
     }),
     [auth]
