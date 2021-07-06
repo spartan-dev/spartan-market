@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import styles from "../styles/Home.module.css";
 import { useAuth } from "../context/AuthContext";
@@ -25,7 +25,11 @@ export default function Login() {
     message: "",
     alertType: "",
   });
-
+  /*   useEffect(() => {
+    if (auth) {
+      router.push("/dashboard");
+    }
+  }); */
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: Yup.object(validationSchema),

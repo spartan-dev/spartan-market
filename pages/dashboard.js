@@ -1,28 +1,27 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import {
+  VendorDashboard,
+  AdminDashboard,
+  CostumerDashboard,
+} from "../components/Dashboard";
 import { useAuth } from "../context/AuthContext";
-const Dashboard = () => {
+const Dashboard = ({ children }) => {
   const [user, setUser] = useState();
   const { auth } = useAuth();
-  console.log(auth);
-  // const user = { role: "VENDOR", email: "ventas@gmail.com" };
 
   switch (auth.role) {
     case "ADMIN":
-      return <div>admin</div>;
+      return <AdminDashboard />;
 
     case "VENDOR":
-      return (
-        <Layout>
-          <h1>Vendedor</h1>
-        </Layout>
-      );
+      return <VendorDashboard />;
 
     case "COSTUMER":
-      return <div>costumer</div>;
+      return <CostumerDashboard />;
 
     default:
-      return <div>no user set</div>;
+      return <div>Redirect to no where</div>;
   }
 };
 

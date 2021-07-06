@@ -110,7 +110,6 @@ const NavBar = ({ children }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  console.log(auth, "in navbar");
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -163,10 +162,10 @@ const NavBar = ({ children }) => {
         </div>
         <Divider />
         <List>
-          {auth.role === "VENDOR"
+          {auth?.role === "VENDOR"
             ? vendorOptions.map((text, index) => (
                 <Link href={text[0]} key={index} passHref>
-                  <ListItem button>
+                  <ListItem button onClick={() => setOpen(false)}>
                     <ListItemIcon>{text[2]()}</ListItemIcon>
                     <ListItemText primary={text[1]} />
                   </ListItem>

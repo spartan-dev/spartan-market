@@ -7,7 +7,7 @@ const AuthContext = createContext({
   logout: () => null,
   setReloadUser: () => null,
 });
-
+const DispatchContext = createContext();
 const AuthDispatchContext = createContext();
 
 const reducer = (state, action) => {
@@ -35,7 +35,6 @@ export const AuthProvider = ({ children }) => {
     setRealoadUser(false);
   }, [reloadUser]);
   const login = (token, userId, role) => {
-    console.log(role, "en context");
     setToken(token);
     setRole(role);
     setAuth({
@@ -55,10 +54,11 @@ export const AuthProvider = ({ children }) => {
   );
   if (auth === undefined) return null;
   return (
-    <AuthDispatchContext.Provider value="aun nada">
+    <AuthDispatchContext.Provider value="nada aun">
       <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>
     </AuthDispatchContext.Provider>
   );
 };
 
 export const useAuth = () => useContext(AuthContext);
+export const useDispatch = () => useContext(DispatchContext);
