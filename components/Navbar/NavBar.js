@@ -185,7 +185,7 @@ const NavBar = ({ children }) => {
             Spartan MarketPlace
           </Typography>
           <Typography className={classes.title} variant="h6" noWrap>
-            User role: {auth.role}
+            User role: {auth?.role}
           </Typography>
           <Button onClick={handleLogout} color="inherit">
             Logout
